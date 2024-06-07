@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "551530141324",
+    "project_id": "trips-app-b071a",
+    "storage_bucket": "trips-app-b071a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:551530141324:android:9e15fd97efe43098a10da9",
+        "android_client_info": {
+          "package_name": "com.MalakAlbattire.animation_flutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmLM4-3a78KmBaXblErksZuXjmwVHEbYY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
