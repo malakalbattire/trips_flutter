@@ -71,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               email: email, password: password);
                           if (user != null) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                 content: Text('logged in successfully '),
                                 backgroundColor: Colors.green,
                               ),

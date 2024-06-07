@@ -69,14 +69,28 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             await _auth.createUserWithEmailAndPassword(
                                 email: email, password: password);
                         if (newUser != null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('registered successfully! '),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
                           Navigator.pushNamed(context, Home.id);
                           setState(() {
                             showSpinner = false;
                           });
                         }
                       } catch (e) {
-                        print(e);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(e.toString()),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
                       }
+                      setState(() {
+                        showSpinner = false;
+                      });
                     },
                   ),
                 ],
