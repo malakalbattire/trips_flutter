@@ -22,3 +22,7 @@ const kSizedBox30 = SizedBox(
 const kSizedBox20 = SizedBox(
   height: 20,
 );
+const kNotificationIcon = Icon(
+  Icons.notifications,
+  color: Colors.white,
+);
