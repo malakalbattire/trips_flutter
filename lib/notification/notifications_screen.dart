@@ -13,18 +13,38 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Map payload = {};
   @override
   Widget build(BuildContext context) {
-    // final data = ModalRoute.of(context)!.settings.arguments as RemoteMessage;
-    //  print(data.toString());
+    final message = ModalRoute.of(context)!.settings.arguments as RemoteMessage;
 
     return Scaffold(
+      appBar: AppBar(),
       body: SafeArea(
-        child: Column(
-          children: [
-            Text('data')
-            // Text(message.notification!.title.toString()),
-            // Text('body: ${message.notification!.body.toString()}'),
-            // Text('${message.data}'),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Container(
+            height: 150.0,
+            padding: const EdgeInsets.all(15.0),
+            color: Colors.grey.shade200,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  message.notification!.title.toString(),
+                  style: const TextStyle(
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                Text(
+                  message.notification!.body.toString(),
+                  style: const TextStyle(
+                    fontSize: 20.0,
+                  ),
+                ),
+                // Text('${message.data}'),
+              ],
+            ),
+          ),
         ),
       ),
     );

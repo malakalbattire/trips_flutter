@@ -12,7 +12,7 @@ class FirebaseNotifications {
     initPushNotifications();
   }
 
-  void handleMessage(RemoteMessage? message) {
+  Future<void> handleMessage(RemoteMessage? message) async {
     if (message == null) return;
     navigatorKey.currentState?.pushNamed(
       NotificationScreen.id,
@@ -21,21 +21,14 @@ class FirebaseNotifications {
   }
 
   Future initPushNotifications() async {
-    // await FirebaseMessaging.instance
-    //     .setForegroundNotificationPresentationOptions(
-    //   alert: true,
-    //   badge: true,
-    //   sound: true,
-    // );
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
     FirebaseMessaging.instance.getInitialMessage().then(handleMessage);
-    // FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
-    // FirebaseMessaging.onBackgroundMessage(handleBackgroundMessages);
+    FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
     FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
   }
-
-  // Future<void> handleBackgroundMessages(RemoteMessage message) async {
-  //   print('title: ${message.notification?.title}');
-  //   print('body: ${message.notification?.body}');
-  //   print('message: ${message.data}');
-  // }
 }
