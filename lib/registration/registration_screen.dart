@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:animation_flutter/shared/constants.dart';
-import 'package:animation_flutter/home/home.dart';
+import 'package:animation_flutter/navigation_menu.dart';
 import 'package:animation_flutter/shared/roundedButton.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -75,7 +75,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               backgroundColor: Colors.green,
                             ),
                           );
-                          Navigator.pushNamed(context, Home.id);
+                          Navigator.pushNamed(context, NavigationMenu.id);
                           setState(() {
                             showSpinner = false;
                           });
