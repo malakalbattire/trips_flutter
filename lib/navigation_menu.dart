@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'home/home.dart';
 import 'saved/saved.dart';
-import 'profile/profile.dart';
 import 'package:get/get.dart';
+import 'authentication_wrapper.dart';
 
 class NavigationMenu extends StatelessWidget {
   static const String id = 'navigation_menu';
@@ -35,8 +35,8 @@ class NavigationMenu extends StatelessWidget {
 class NavigationController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
   final screens = [
-    Home(),
-    SavedScreen(),
-    ProfileScreen(),
+    const Home(),
+    const SavedScreen(),
+    AuthenticationWrapper(),
   ];
 }

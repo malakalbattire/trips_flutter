@@ -1,8 +1,12 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
+
+final usersRef = FirebaseFirestore.instance.collection('users');
 
 class NotificationScreen extends StatefulWidget {
   static const String id = 'notification_screen';
+
   const NotificationScreen({super.key});
 
   @override
@@ -10,11 +14,10 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
-  Map payload = {};
+  List<dynamic> users = [];
+
   @override
   Widget build(BuildContext context) {
-    final message = ModalRoute.of(context)!.settings.arguments as RemoteMessage;
-
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
@@ -28,19 +31,21 @@ class _NotificationScreenState extends State<NotificationScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  message.notification!.title.toString(),
-                  style: const TextStyle(
-                    fontSize: 30.0,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                Text(
-                  message.notification!.body.toString(),
-                  style: const TextStyle(
-                    fontSize: 20.0,
-                  ),
-                ),
+                const Text('notifications!'),
+
+                // Text(
+                //   message.notification!.title.toString(),
+                //   style: const TextStyle(
+                //     fontSize: 30.0,
+                //     fontWeight: FontWeight.w400,
+                //   ),
+                // ),
+                // Text(
+                //   message.notification!.body.toString(),
+                //   style: const TextStyle(
+                //     fontSize: 20.0,
+                //   ),
+                // ),
                 // Text('${message.data}'),
               ],
             ),

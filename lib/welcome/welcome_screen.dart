@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:animation_flutter/login/login_screen.dart';
-import 'package:animation_flutter/registration/registration_screen.dart';
-import 'package:animation_flutter/shared/roundedButton.dart';
+import 'package:animation_flutter/auth/login/login_screen.dart';
+import 'package:animation_flutter/auth/registration/registration_screen.dart';
+import 'package:animation_flutter/shared/rounded_button.dart';
 
 class WelcomeScreen extends StatelessWidget {
   static const String id = 'welcome_screen';
@@ -20,7 +20,7 @@ class WelcomeScreen extends StatelessWidget {
               children: [
                 Hero(
                   tag: 'logo',
-                  child: Container(
+                  child: SizedBox(
                     height: 300.0,
                     child: Image.asset('images/logo.png'),
                   ),

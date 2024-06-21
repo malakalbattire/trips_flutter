@@ -19,8 +19,8 @@ class FirebaseNotifications {
 
   Future<void> initNotifications() async {
     await _firebaseMessaging.requestPermission();
-    final token = await _firebaseMessaging.getToken();
-    print('Device token: $token');
+    //final token = await _firebaseMessaging.getToken();
+    // print('Device token: $token');
     initPushNotifications();
   }
 
@@ -33,8 +33,8 @@ class FirebaseNotifications {
   }
 
   Future initLocalNotifications() async {
-    const android = AndroidInitializationSettings('@drawable/ic_launcher');
-    const settings = InitializationSettings(android: android);
+    // const android = AndroidInitializationSettings('@drawable/ic_launcher');
+    //const settings = InitializationSettings(android: android);
     // await _localNotifications.initialize(settings,
     //     onDidReceiveNotificationResponse: (payload) {
     //   final message = RemoteMessage.fromMap(jsonDecode(payload!));

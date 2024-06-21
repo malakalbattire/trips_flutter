@@ -3,12 +3,14 @@ import 'package:animation_flutter/details/trip.dart';
 import 'package:animation_flutter/details/details.dart';
 
 class TripList extends StatefulWidget {
+  const TripList({super.key});
+
   @override
   _TripListState createState() => _TripListState();
 }
 
 class _TripListState extends State<TripList> {
-  List<Widget> _tripTiles = [];
+  final List<Widget> _tripTiles = [];
   final GlobalKey _listKey = GlobalKey();
 
   @override
@@ -19,7 +21,7 @@ class _TripListState extends State<TripList> {
 
   void _addTrips() {
     // get data from db
-    List<Trip> _trips = [
+    List<Trip> trips = [
       Trip(
           title: 'Beach Paradise', price: '350', nights: '3', img: 'beach.png'),
       Trip(title: 'City Break', price: '400', nights: '5', img: 'city.png'),
@@ -27,9 +29,9 @@ class _TripListState extends State<TripList> {
       Trip(title: 'Space Blast', price: '600', nights: '4', img: 'space.png'),
     ];
 
-    _trips.forEach((Trip trip) {
+    for (var trip in trips) {
       _tripTiles.add(_buildTile(trip));
-    });
+    }
   }
 
   Widget _buildTile(Trip trip) {
@@ -38,7 +40,7 @@ class _TripListState extends State<TripList> {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => Details(trip: trip)));
       },
-      contentPadding: EdgeInsets.all(25),
+      contentPadding: const EdgeInsets.all(25),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
