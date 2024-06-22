@@ -31,7 +31,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text('notifications!'),
+                const Text('there is no notifications!'),
 
                 // Text(
                 //   message.notification!.title.toString(),

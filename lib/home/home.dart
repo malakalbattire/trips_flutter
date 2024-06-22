@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:animation_flutter/home/screen_title.dart';
 import 'package:animation_flutter/shared/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:animation_flutter/details/trip_details.dart';
+import 'package:animation_flutter/trips/trip_details.dart';
 
 class Home extends StatefulWidget {
   static const String id = 'home_screen';
@@ -58,8 +58,16 @@ class _HomeState extends State<Home> {
                     final tripWidget = ListTile(
                         trailing: Text('\$${trip['price']}'),
                         onTap: () {
-                          Navigator.pushNamed(context, TripDetails.id);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => TripDetailsPage(trip.id),
+                            ),
+                          );
                         },
+                        // onTap: () {
+                        //   Navigator.pushNamed(context, TripDetails.id);
+                        // },
                         contentPadding: const EdgeInsets.all(25),
                         title: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

@@ -8,7 +8,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'notification/firebase_notifications.dart';
 import 'navigation_menu.dart';
 import 'saved/saved.dart';
-import 'details/trip_details.dart';
 import 'package:animation_flutter/notification/notifications_screen.dart';
 import 'package:animation_flutter/authentication_wrapper.dart';
 
@@ -59,9 +58,6 @@ class _MyAppState extends State<MyApp> {
         Home.id: (context) => const Home(),
         NotificationScreen.id: (context) => const NotificationScreen(),
         SavedScreen.id: (context) => const SavedScreen(),
-        //ProfileScreen.id: (context) => ProfileScreen(),
-        TripDetails.id: (context) => const TripDetails(),
-        //ProfileScreen.id: (context) => ProfileScreen(),
         AuthenticationWrapper.id: (context) => AuthenticationWrapper(),
       },
     );
