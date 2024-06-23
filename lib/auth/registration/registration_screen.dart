@@ -31,7 +31,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
       if (user != null) {
         await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
-          'name': fullName, // Or retrieve from input
+          'name': fullName,
           'email': email,
           'favs': favs,
         });

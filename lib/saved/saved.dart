@@ -34,18 +34,18 @@ class SavedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Firestore Map Field'),
+        title: const Text('Firestore Map Field'),
       ),
       body: Center(
         child: FutureBuilder<Map<String, dynamic>?>(
           future: getMapField(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (!snapshot.hasData || snapshot.data == null) {
-              return Text('Map field is null');
+              return const Text('Map field is null');
             } else {
               Map<String, dynamic> mapField = snapshot.data!;
               return ListView.builder(

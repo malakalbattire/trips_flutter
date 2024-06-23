@@ -35,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
       child: Scaffold(
-        appBar: AppBar(title: Text('Sign In')),
+        appBar: AppBar(title: const Text('Sign In')),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
