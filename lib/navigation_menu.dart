@@ -36,7 +36,9 @@ class NavigationController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
   final screens = [
     const Home(),
-    const SavedScreen(),
+    SavedScreen(
+      userId: '38tdlQ2eHSaJ1a8Dcq7DYij1ETN2',
+    ),
     AuthenticationWrapper(),
   ];
 }

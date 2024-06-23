@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:animation_flutter/auth/login/login_screen.dart';
+
+//import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:animation_flutter/fav/fav.dart';
+Map<String, bool> fav = {};
 
 class TripsPage extends StatefulWidget {
   static const String id = 'trips_page';
@@ -10,6 +15,52 @@ class TripsPage extends StatefulWidget {
 class _TripsPageState extends State<TripsPage> {
   final CollectionReference _tripsRef =
       FirebaseFirestore.instance.collection('trips');
+
+  // Future<void> update(String email, String item) async {
+  //   Map<String, bool> bookmark = {};
+  //
+  //   await FirebaseFirestore.instance
+  //       .collection("users")
+  //       .where("email", isEqualTo: email)
+  //       .get()
+  //       .then((QuerySnapshot querySnapshot) {
+  //     for (var element in querySnapshot.docs) {
+  //       bookmark = Map.from(element["bookmarks"]);
+  //       print(bookmark);
+  //     }
+  //   });
+  //
+  //   for (var element in bookmark.keys) {
+  //     if (element == item) {
+  //       bookmark[item] = bookmark[item]! ? false : true;
+  //     }
+  //   }
+  //
+  //   await FirebaseFirestore.instance
+  //       .collection("users")
+  //       .where("email", isEqualTo: email)
+  //       .get()
+  //       .then((QuerySnapshot querySnapshot) {
+  //     for (var element in querySnapshot.docs) {
+  //       element.reference.update({"fav": bookmark});
+  //     }
+  //   });
+  //
+  //  // await getitmeslogin();
+  // }
+
+  // Future<void> getitmeslogin() async {
+  //   Map<String, bool> bookmarks = {};
+  //   await FirebaseFirestore.instance
+  //       .collection("users")
+  //       .where("email", isEqualTo: FirebaseAuth.instance.currentUser!.email)
+  //       .get()
+  //       .then((QuerySnapshot querySnapshot) {
+  //     for (var element in querySnapshot.docs) {
+  //       bookmarks = Map.from(element["fav"]);
+  //     }
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -119,6 +170,46 @@ class TripDetailsPage extends StatelessWidget {
               //print('detail====${detail.id}');
               return Column(
                 children: [
+                  IconButton(
+                      onPressed: () async {
+                        print('======= pressed =========');
+                        Future<void> update(String email, String trip) async {
+                          await FirebaseFirestore.instance
+                              .collection('users')
+                              .get()
+                              .then(
+                            (QuerySnapshot querySnapshot) {
+                              for (var element in querySnapshot.docs) {
+                                fav = Map.from(element["favs"]);
+                                print(fav);
+                              }
+                              ;
+                            },
+                          );
+                          for (var element in fav.keys) {
+                            if (element == trip) {
+                              fav[trip] = fav[trip]! ? false : true;
+                            }
+                          }
+                          await FirebaseFirestore.instance
+                              .collection("users")
+                              .where("email", isEqualTo: email)
+                              .get()
+                              .then((QuerySnapshot querySnapshot) {
+                            for (var element in querySnapshot.docs) {
+                              element.reference.update({"favs": fav});
+                            }
+                          });
+
+                          await getItemsLogin();
+                        }
+
+                        print(update.toString());
+                      },
+                      icon: Icon(
+                        Icons.favorite_border,
+                        color: Colors.red,
+                      )),
                   ListTile(
                     title: Text(
                       detail['description'],

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
 
 final usersRef = FirebaseFirestore.instance.collection('users');
 
@@ -32,21 +31,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const Text('there is no notifications!'),
-
-                // Text(
-                //   message.notification!.title.toString(),
-                //   style: const TextStyle(
-                //     fontSize: 30.0,
-                //     fontWeight: FontWeight.w400,
-                //   ),
-                // ),
-                // Text(
-                //   message.notification!.body.toString(),
-                //   style: const TextStyle(
-                //     fontSize: 20.0,
-                //   ),
-                // ),
-                // Text('${message.data}'),
               ],
             ),
           ),

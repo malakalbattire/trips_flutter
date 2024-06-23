@@ -10,6 +10,7 @@ import 'navigation_menu.dart';
 import 'saved/saved.dart';
 import 'package:animation_flutter/notification/notifications_screen.dart';
 import 'package:animation_flutter/authentication_wrapper.dart';
+import 'fav/fav.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -57,7 +58,10 @@ class _MyAppState extends State<MyApp> {
         RegistrationScreen.id: (context) => RegistrationScreen(),
         Home.id: (context) => const Home(),
         NotificationScreen.id: (context) => const NotificationScreen(),
-        SavedScreen.id: (context) => const SavedScreen(),
+        SavedScreen.id: (context) => SavedScreen(
+              userId: '38tdlQ2eHSaJ1a8Dcq7DYij1ETN2',
+            ),
+        Fav.id: (context) => Fav(),
         AuthenticationWrapper.id: (context) => AuthenticationWrapper(),
       },
     );

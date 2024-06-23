@@ -10,35 +10,37 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Hero(
-                  tag: 'logo',
-                  child: SizedBox(
-                    height: 300.0,
-                    child: Image.asset('images/logo.png'),
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Hero(
+                    tag: 'logo',
+                    child: SizedBox(
+                      height: 300.0,
+                      child: Image.asset('images/logo.png'),
+                    ),
                   ),
-                ),
-                RoundedButton(
-                  title: 'Log In',
-                  colour: Colors.lightBlueAccent,
-                  onPressed: () {
-                    Navigator.pushNamed(context, LoginScreen.id);
-                  },
-                ),
-                RoundedButton(
-                    title: 'Register',
-                    colour: Colors.blueAccent,
+                  RoundedButton(
+                    title: 'Log In',
+                    colour: Colors.lightBlueAccent,
                     onPressed: () {
-                      Navigator.pushNamed(context, RegistrationScreen.id);
-                    }),
-              ],
+                      Navigator.pushNamed(context, LoginScreen.id);
+                    },
+                  ),
+                  RoundedButton(
+                      title: 'Register',
+                      colour: Colors.blueAccent,
+                      onPressed: () {
+                        Navigator.pushNamed(context, RegistrationScreen.id);
+                      }),
+                ],
+              ),
             ),
           ),
         ),

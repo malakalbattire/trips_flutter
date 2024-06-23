@@ -6,6 +6,8 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:animation_flutter/shared/constants.dart';
 import 'package:animation_flutter/shared/rounded_button.dart';
 
+Map<String, bool> favs = {};
+
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';
 
@@ -19,36 +21,13 @@ class _LoginScreenState extends State<LoginScreen> {
   bool showSpinner = false;
   final _auth = FirebaseAuth.instance;
 
-  Future<void> signIn(String email, String password) async {
-    try {
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+  //
 
-      User? user = userCredential.user;
-
-      if (user != null) {
-        // Check if user document exists, if not create it
-        DocumentSnapshot userDoc = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.uid)
-            .get();
-        if (!userDoc.exists) {
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(user.uid)
-              .set({
-            'name': 'Default Name', // Or retrieve from input
-            'email': email,
-            // Add other default fields if necessary
-          });
-        }
-      }
-    } catch (e) {
-      print(e);
-    }
+  @override
+  void initState() {
+    getItemsLogin();
+    // TODO: implement initState
+    super.initState();
   }
 
   @override
@@ -132,4 +111,17 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+}
+
+Future<void> getItemsLogin() async {
+  await FirebaseFirestore.instance
+      .collection("users")
+      .where("email", isEqualTo: FirebaseAuth.instance.currentUser!.email)
+      .get()
+      .then((QuerySnapshot querySnapshot) {
+    for (var element in querySnapshot.docs) {
+      favs = Map.from(element["favs"]);
+      print('login ${favs}');
+    }
+  });
 }

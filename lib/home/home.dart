@@ -4,6 +4,7 @@ import 'package:animation_flutter/home/screen_title.dart';
 import 'package:animation_flutter/shared/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:animation_flutter/trips/trip_details.dart';
+//import 'package:animation_flutter/fav/fav.dart';
 
 class Home extends StatefulWidget {
   static const String id = 'home_screen';
@@ -85,7 +86,7 @@ class _HomeState extends State<Home> {
                         leading: ClipRRect(
                           borderRadius: BorderRadius.circular(8.0),
                           child: Hero(
-                            tag: 'location-img',
+                            tag: 'img ${trip['title']} ',
                             child: Image.network(
                               trip['img'],
                               height: 50.0,

@@ -1,5 +1,7 @@
+import 'package:animation_flutter/welcome/welcome_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ProfileScreen extends StatelessWidget {
   static const String id = 'profile_screen';
@@ -57,6 +59,13 @@ class ProfileScreen extends StatelessWidget {
                     ],
                   ),
                 );
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.logout),
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                Navigator.pushNamed(context, WelcomeScreen.id);
               },
             ),
           ],
