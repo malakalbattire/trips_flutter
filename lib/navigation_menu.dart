@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'home/home.dart';
 import 'saved/saved.dart';
 import 'package:get/get.dart';
 import 'authentication_wrapper.dart';
+
+final uId = FirebaseAuth.instance.currentUser!.uid;
 
 class NavigationMenu extends StatelessWidget {
   static const String id = 'navigation_menu';
@@ -37,7 +40,7 @@ class NavigationController extends GetxController {
   final screens = [
     const Home(),
     SavedScreen(
-      userId: '38tdlQ2eHSaJ1a8Dcq7DYij1ETN2',
+      userId: uId,
     ),
     AuthenticationWrapper(),
   ];

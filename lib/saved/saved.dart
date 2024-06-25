@@ -1,4 +1,3 @@
-// home_screen.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -10,12 +9,10 @@ class SavedScreen extends StatelessWidget {
 
   Future<Map<String, dynamic>?> getMapField() async {
     try {
-      // Replace 'collectionName' and 'documentId' with your collection and document IDs
       DocumentSnapshot documentSnapshot =
           await _firestore.collection('users').doc(userId).get();
 
       if (documentSnapshot.exists) {
-        // Replace 'mapFieldName' with the name of your map field
         Map<String, dynamic>? mapField =
             documentSnapshot.get('favs') as Map<String, dynamic>?;
 
@@ -34,7 +31,7 @@ class SavedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Firestore Map Field'),
+        title: const Text('Saved Trips'),
       ),
       body: Center(
         child: FutureBuilder<Map<String, dynamic>?>(
@@ -48,14 +45,21 @@ class SavedScreen extends StatelessWidget {
               return const Text('Map field is null');
             } else {
               Map<String, dynamic> mapField = snapshot.data!;
+              print(mapField);
               return ListView.builder(
                 itemCount: mapField.length,
                 itemBuilder: (context, index) {
                   String key = mapField.keys.elementAt(index);
                   dynamic value = mapField[key];
-                  return ListTile(
-                    title: Text('$key: $value'),
-                  );
+                  if (value == true) {
+                    print(key);
+                    return ListTile(
+                      title: Text('$key'),
+                    );
+                  }
+
+                  //  print(key);
+                  return Text('data');
                 },
               );
             }

@@ -11,7 +11,10 @@ import 'saved/saved.dart';
 import 'package:animation_flutter/notification/notifications_screen.dart';
 import 'package:animation_flutter/authentication_wrapper.dart';
 import 'fav/fav.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'profile/edit_profile_screen.dart';
 
+final uId = FirebaseAuth.instance.currentUser!.uid;
 final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
@@ -59,10 +62,11 @@ class _MyAppState extends State<MyApp> {
         Home.id: (context) => const Home(),
         NotificationScreen.id: (context) => const NotificationScreen(),
         SavedScreen.id: (context) => SavedScreen(
-              userId: '38tdlQ2eHSaJ1a8Dcq7DYij1ETN2',
+              userId: uId,
             ),
         Fav.id: (context) => Fav(),
         AuthenticationWrapper.id: (context) => AuthenticationWrapper(),
+        EditProfileScreen.id: (context) => EditProfileScreen(),
       },
     );
   }

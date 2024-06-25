@@ -1,10 +1,11 @@
-import 'package:animation_flutter/Notification/notifications_screen.dart';
+//import 'package:animation_flutter/Notification/notifications_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:animation_flutter/home/screen_title.dart';
+//import 'package:animation_flutter/home/screen_title.dart';
 import 'package:animation_flutter/shared/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:animation_flutter/trips/trip_details.dart';
 //import 'package:animation_flutter/fav/fav.dart';
+import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 
 class Home extends StatefulWidget {
   static const String id = 'home_screen';
@@ -21,33 +22,72 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("images/bg.png"),
-              fit: BoxFit.fitWidth,
-              alignment: Alignment.topLeft),
-        ),
+        //padding: const EdgeInsets.all(20),
+        // decoration: const BoxDecoration(
+        //   image: DecorationImage(
+        //       image: AssetImage("images/bg.png"),
+        //       fit: BoxFit.fitWidth,
+        //       alignment: Alignment.topLeft),
+        // ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            kSizedBox20,
-            SizedBox(
-              height: 160,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const ScreenTitle(text: "Trips List"),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, NotificationScreen.id);
-                    },
-                    child: const Icon(Icons.notifications),
+            ImageSlideshow(
+              width: double.infinity,
+              height: 300,
+              initialPage: 0,
+              indicatorColor: Colors.blue,
+              indicatorBackgroundColor: Colors.grey,
+              autoPlayInterval: 3000,
+              isLoop: true,
+              onPageChanged: (value) {
+                print('Page changed: $value');
+              },
+              children: [
+                Container(
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("images/ski.png"),
+                        fit: BoxFit.fitWidth,
+                        alignment: Alignment.topLeft),
                   ),
-                ],
-              ),
+                  // child: GestureDetector,
+                ),
+                Container(
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("images/beach.png"),
+                        fit: BoxFit.fitWidth,
+                        alignment: Alignment.topLeft),
+                  ),
+                ),
+                Container(
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("images/ski.png"),
+                        fit: BoxFit.fitWidth,
+                        alignment: Alignment.topLeft),
+                  ),
+                ),
+              ],
             ),
+            kSizedBox20,
+            // SizedBox(
+            //   height: 160,
+            //   child: Row(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: [
+            //       const ScreenTitle(text: "Trips List"),
+            //       GestureDetector(
+            //         onTap: () {
+            //           Navigator.pushNamed(context, NotificationScreen.id);
+            //         },
+            //         child: const Icon(Icons.notifications),
+            //       ),
+            //     ],
+            //   ),
+            // ),
             StreamBuilder<QuerySnapshot>(
               stream:
                   FirebaseFirestore.instance.collection('trips').snapshots(),
