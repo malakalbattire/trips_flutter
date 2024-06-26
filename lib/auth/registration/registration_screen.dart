@@ -67,15 +67,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   Future<void> getItems() async {
-    await FirebaseFirestore.instance
-        .collection("trips")
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      for (var element in querySnapshot.docs) {
-        favs[element["title"].toString()] = false;
-        print('favs register${favs}');
-      }
-    });
+    await FirebaseFirestore.instance.collection("trips").get().then(
+      (QuerySnapshot querySnapshot) {
+        for (var element in querySnapshot.docs) {
+          favs[element["title"].toString()] == false;
+          print('favs register${favs}');
+        }
+      },
+    );
 
     await FirebaseFirestore.instance.collection("users").add({"favs": favs});
   }

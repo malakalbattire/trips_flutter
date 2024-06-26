@@ -61,9 +61,7 @@ class _MyAppState extends State<MyApp> {
         RegistrationScreen.id: (context) => RegistrationScreen(),
         Home.id: (context) => const Home(),
         NotificationScreen.id: (context) => const NotificationScreen(),
-        SavedScreen.id: (context) => SavedScreen(
-              userId: uId,
-            ),
+        SavedScreen.id: (context) => SavedScreen(),
         Fav.id: (context) => Fav(),
         AuthenticationWrapper.id: (context) => AuthenticationWrapper(),
         EditProfileScreen.id: (context) => EditProfileScreen(),
