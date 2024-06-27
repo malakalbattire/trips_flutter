@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'home/home.dart';
-import 'saved/saved.dart';
+import 'views/home/home.dart';
+import 'views/saved/saved.dart';
 import 'package:get/get.dart';
 import 'authentication_wrapper.dart';
 
@@ -40,6 +40,6 @@ class NavigationController extends GetxController {
   final screens = [
     const Home(),
     SavedScreen(),
-    AuthenticationWrapper(),
+    const AuthenticationWrapper(),
   ];
 }

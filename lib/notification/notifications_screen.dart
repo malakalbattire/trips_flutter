@@ -26,11 +26,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
             height: 150.0,
             padding: const EdgeInsets.all(15.0),
             color: Colors.grey.shade200,
-            child: Column(
+            child: const Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text('there is no notifications!'),
+                Text('there is no notifications!'),
               ],
             ),
           ),

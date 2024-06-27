@@ -56,6 +56,7 @@ class FirebaseNotifications {
 
     FirebaseMessaging.onMessage.listen((message) {
       final notification = message.notification;
+      //print('noti=========${notification}');
       if (notification == null) return;
 
       _localNotifications.show(

@@ -55,7 +55,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   hintText: 'Update Your FullName',
                 ),
                 validator: (value) {
-                  print(value);
                   if (value == null || value.isEmpty) {
                     return 'Please enter your name';
                   }

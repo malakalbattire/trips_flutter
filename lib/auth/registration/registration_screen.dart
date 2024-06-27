@@ -8,11 +8,13 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static const String id = 'register_screen';
+
+  const RegistrationScreen({super.key});
   @override
-  _RegistrationScreenState createState() => _RegistrationScreenState();
+  RegistrationScreenState createState() => RegistrationScreenState();
 }
 
-class _RegistrationScreenState extends State<RegistrationScreen> {
+class RegistrationScreenState extends State<RegistrationScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   late String fullName;
@@ -71,7 +73,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       (QuerySnapshot querySnapshot) {
         for (var element in querySnapshot.docs) {
           favs[element["title"].toString()] == false;
-          print('favs register${favs}');
         }
       },
     );
@@ -169,10 +170,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       });
                     },
                   ),
-                  SizedBox(height: 20),
+                  kSizedBox20,
                   Text(
                     errorMessage,
-                    style: TextStyle(color: Colors.red),
+                    style: const TextStyle(color: Colors.red),
                   ),
                 ],
               ),

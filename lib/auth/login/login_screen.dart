@@ -10,7 +10,7 @@ Map<String, bool> favs = {};
 
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';
-
+  const LoginScreen({super.key});
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -79,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         final user = await _auth.signInWithEmailAndPassword(
                             email: emailController.text,
                             password: passwordController.text);
-                        print(user);
+                        //print(user);
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text('logged in successfully '),
@@ -121,7 +121,6 @@ Future<void> getItemsLogin() async {
       .then((QuerySnapshot querySnapshot) {
     for (var element in querySnapshot.docs) {
       favs = Map.from(element["favs"]);
-      print('login ${favs}');
     }
   });
 }
