@@ -1,9 +1,7 @@
-import 'package:animation_flutter/shared/constants.dart';
 import 'package:animation_flutter/trips/trip_details.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:animation_flutter/auth/login/login_screen.dart';
 import 'package:quickalert/quickalert.dart';
 
 class SavedScreen extends StatelessWidget {
@@ -106,45 +104,6 @@ class SavedScreen extends StatelessWidget {
               }
             },
           );
-
-          // return ListView(
-          //   children: snapshot.data!.docs
-          //       .map((document) {
-          //         Widget? getData() {
-          //           if (document['isFav'] == true) {
-          //             return ListTile(
-          //               title: Text(document['title']),
-          //               trailing: IconButton(
-          //                 icon: Icon(
-          //                   document['isFav']
-          //                       ? Icons.favorite
-          //                       : Icons.favorite_border,
-          //                   color: document['isFav'] ? Colors.red : null,
-          //                 ),
-          //                 onPressed: () {
-          //                   _toggleFavorite(document.id, document['isFav']);
-          //                 },
-          //               ),
-          //               onTap: () {
-          //                 Navigator.push(
-          //                   context,
-          //                   MaterialPageRoute(
-          //                     builder: (context) =>
-          //                         TripDetailsPage(document.id),
-          //                   ),
-          //                 );
-          //               },
-          //             );
-          //           }
-          //           return null;
-          //         }
-          //
-          //         return getData();
-          //       })
-          //       .where((element) => element != null)
-          //       .toList()
-          //       .cast<Widget>(),
-          // );
         },
       ),
     );
