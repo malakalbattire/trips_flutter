@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:animation_flutter/auth/login/login_screen.dart';
 import 'package:animation_flutter/auth/registration/registration_screen.dart';
-import 'package:animation_flutter/shared/rounded_button.dart';
+import 'package:animation_flutter/utilities/rounded_button.dart';
 
 class WelcomeScreen extends StatelessWidget {
   static const String id = 'welcome_screen';

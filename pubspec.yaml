@@ -47,6 +47,8 @@ dependencies:
   flutter_image_slideshow: ^0.1.6
   http: ^1.2.1
   quickalert: ^1.1.0
+  persistent_bottom_nav_bar_v2: ^5.2.3
+  flutter_inset_box_shadow: ^1.0.8
 
 dev_dependencies:
   flutter_test:

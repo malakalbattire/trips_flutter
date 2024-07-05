@@ -1,19 +1,19 @@
 import 'package:animation_flutter/auth/welcome/welcome_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'auth/login/login_screen.dart';
 import 'auth/registration/registration_screen.dart';
 import 'views/home/home.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'notification/firebase_notifications.dart';
-import 'navigation_menu.dart';
+import 'utilities/navigation_menu.dart';
 import 'views/saved/saved.dart';
 import 'package:animation_flutter/notification/notifications_screen.dart';
-import 'package:animation_flutter/authentication_wrapper.dart';
-
-import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:animation_flutter/utilities/authentication_wrapper.dart';
 import 'views/profile/edit_profile_screen.dart';
+import 'views/saved/favorites_provider.dart';
+import 'views/profile/user_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 final uId = FirebaseAuth.instance.currentUser!.uid;
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -23,25 +23,32 @@ void main() async {
 
   if (kIsWeb) {
     await Firebase.initializeApp(
-        options: const FirebaseOptions(
-      apiKey: "AIzaSyAnGg5J15m8Rp5OJa5N7GrHPNZSjdQIdec",
-      appId: '1:219285846961:web:af750662b58f2c9f38db90',
-      messagingSenderId: "219285846961",
-      projectId: 'trips-flutter-fef44',
-      storageBucket: "trips-flutter-fef44.appspot.com",
-    ));
+      options: const FirebaseOptions(
+        apiKey: "YOUR_API_KEY",
+        appId: 'YOUR_APP_ID',
+        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+        projectId: 'YOUR_PROJECT_ID',
+        storageBucket: "YOUR_STORAGE_BUCKET",
+      ),
+    );
   } else {
     await Firebase.initializeApp();
-    await FirebaseNotifications().initNotifications();
   }
 
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => FavoritesProvider()),
+        ChangeNotifierProvider(
+            create: (_) => UserProvider()), // Add UserProvider here
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
-
-  // const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -63,7 +70,6 @@ class _MyAppState extends State<MyApp> {
         Home.id: (context) => const Home(),
         NotificationScreen.id: (context) => const NotificationScreen(),
         SavedScreen.id: (context) => SavedScreen(),
-        //Fav.id: (context) => Fav(),
         AuthenticationWrapper.id: (context) => const AuthenticationWrapper(),
         EditProfileScreen.id: (context) => const EditProfileScreen(),
       },

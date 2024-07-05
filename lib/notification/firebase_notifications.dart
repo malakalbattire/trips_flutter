@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:animation_flutter/Notification/notifications_screen.dart';
 import 'package:animation_flutter/main.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -19,8 +19,8 @@ class FirebaseNotifications {
 
   Future<void> initNotifications() async {
     await _firebaseMessaging.requestPermission();
-    //final token = await _firebaseMessaging.getToken();
-    // print('Device token: $token');
+    final token = await _firebaseMessaging.getToken();
+    print('Device token:============= $token=======');
     initPushNotifications();
   }
 
@@ -30,6 +30,20 @@ class FirebaseNotifications {
       NotificationScreen.id,
       arguments: message,
     );
+
+    print('message ====== ${message.notification!.body}=====');
+    await _storeNotification(
+      message.notification!.title ?? 'No Title',
+      message.notification!.body ?? 'No Body',
+    );
+  }
+
+  Future<void> _storeNotification(String title, String body) async {
+    await FirebaseFirestore.instance.collection('notifications').add({
+      'title': title,
+      'body': body,
+      'timestamp': FieldValue.serverTimestamp(),
+    });
   }
 
   Future initLocalNotifications() async {
@@ -56,7 +70,7 @@ class FirebaseNotifications {
 
     FirebaseMessaging.onMessage.listen((message) {
       final notification = message.notification;
-      //print('noti=========${notification}');
+
       if (notification == null) return;
 
       _localNotifications.show(

@@ -26,11 +26,36 @@ class _NotificationScreenState extends State<NotificationScreen> {
             height: 150.0,
             padding: const EdgeInsets.all(15.0),
             color: Colors.grey.shade200,
-            child: const Column(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text('there is no notifications!'),
+                //  Text('there is no notifications!'),
+                StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('notifications')
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    List<Container> NotisWidgets = [];
+                    if (snapshot.hasData) {
+                      final notis = snapshot.data?.docs.reversed.toList();
+                      for (var noti in notis!) {
+                        final notiWidget = Container(
+                            child: ListTile(
+                          title: Text(noti['title']),
+                          trailing: Text('\$${noti['body']}'),
+                        ));
+                        NotisWidgets.add(notiWidget);
+                      }
+                    }
+
+                    return Expanded(
+                      child: ListView(
+                        children: NotisWidgets,
+                      ),
+                    );
+                  },
+                )
               ],
             ),
           ),

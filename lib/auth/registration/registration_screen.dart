@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:animation_flutter/navigation_menu.dart';
-import 'package:animation_flutter/shared/constants.dart';
-import 'package:animation_flutter/shared/rounded_button.dart';
+import 'package:animation_flutter/utilities/navigation_menu.dart';
+import 'package:animation_flutter/utilities/constants.dart';
+import 'package:animation_flutter/utilities/rounded_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -77,7 +77,7 @@ class RegistrationScreenState extends State<RegistrationScreen> {
       },
     );
 
-    await FirebaseFirestore.instance.collection("users").add({"favs": favs});
+    // await FirebaseFirestore.instance.collection("users").add({"favs": favs});
   }
 
   @override

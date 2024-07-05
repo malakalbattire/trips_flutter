@@ -1,10 +1,10 @@
-import 'package:animation_flutter/navigation_menu.dart';
+import 'package:animation_flutter/utilities/navigation_menu.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:animation_flutter/shared/constants.dart';
-import 'package:animation_flutter/shared/rounded_button.dart';
+import 'package:animation_flutter/utilities/constants.dart';
+import 'package:animation_flutter/utilities/rounded_button.dart';
 
 Map<String, bool> favs = {};
 
@@ -25,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    getItemsLogin();
+    //getItemsLogin();
     // TODO: implement initState
     super.initState();
   }
@@ -79,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         final user = await _auth.signInWithEmailAndPassword(
                             email: emailController.text,
                             password: passwordController.text);
-                        //print(user);
+                        print(user);
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text('logged in successfully '),
@@ -113,14 +113,14 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-Future<void> getItemsLogin() async {
-  await FirebaseFirestore.instance
-      .collection("users")
-      .where("email", isEqualTo: FirebaseAuth.instance.currentUser!.email)
-      .get()
-      .then((QuerySnapshot querySnapshot) {
-    for (var element in querySnapshot.docs) {
-      favs = Map.from(element["favs"]);
-    }
-  });
-}
+// Future<void> getItemsLogin() async {
+//   await FirebaseFirestore.instance
+//       .collection("users")
+//       .where("email", isEqualTo: FirebaseAuth.instance.currentUser!.email)
+//       .get()
+//       .then((QuerySnapshot querySnapshot) {
+//     for (var element in querySnapshot.docs) {
+//       favs = Map.from(element["favs"]);
+//     }
+//   });
+// }
