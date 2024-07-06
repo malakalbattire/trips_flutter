@@ -1,3 +1,4 @@
+import 'package:animation_flutter/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -21,45 +22,44 @@ class _NotificationScreenState extends State<NotificationScreen> {
       appBar: AppBar(),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Container(
-            height: 150.0,
-            padding: const EdgeInsets.all(15.0),
-            color: Colors.grey.shade200,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                //  Text('there is no notifications!'),
-                StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection('notifications')
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    List<Container> NotisWidgets = [];
-                    if (snapshot.hasData) {
-                      final notis = snapshot.data?.docs.reversed.toList();
-                      for (var noti in notis!) {
-                        final notiWidget = Container(
-                            child: ListTile(
-                          title: Text(noti['title']),
-                          trailing: Text('\$${noti['body']}'),
-                        ));
-                        NotisWidgets.add(notiWidget);
-                      }
-                    }
-
-                    return Expanded(
-                      child: ListView(
-                        children: NotisWidgets,
+            padding: const EdgeInsets.all(20.0),
+            child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('notifications')
+                  .snapshots(),
+              builder: (context, snapshot) {
+                List<Card> notisWidgets = [];
+                if (snapshot.hasData) {
+                  final notis = snapshot.data?.docs.reversed.toList();
+                  for (var noti in notis!) {
+                    final notiWidget = Card(
+                        child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            noti['title'],
+                            style: const TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          kSizedBox20,
+                          Text(
+                            noti['body'],
+                            style: const TextStyle(fontSize: 15),
+                          ),
+                        ],
                       ),
-                    );
-                  },
-                )
-              ],
-            ),
-          ),
-        ),
+                    ));
+                    notisWidgets.add(notiWidget);
+                  }
+                }
+
+                return ListView(
+                  children: notisWidgets,
+                );
+              },
+            )),
       ),
     );
   }

@@ -1,6 +1,5 @@
 import 'package:animation_flutter/Notification/notifications_screen.dart';
 import 'package:animation_flutter/trips/trip_details.dart';
-import 'package:animation_flutter/utilities/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,7 +8,7 @@ import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   static const String id = 'home_screen';
-  const Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   @override
   HomeState createState() => HomeState();
@@ -21,18 +20,45 @@ class HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    currentUserId = FirebaseAuth.instance.currentUser!.uid;
+    currentUserId = FirebaseAuth.instance.currentUser?.uid ?? '';
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Add any dependencies handling code here if needed
+  }
+
+  @override
+  void dispose() {
+    // Avoid using Provider.of(context) directly in dispose()
+    // Use a separate reference if you need to dispose of the provider
+    // Provider.of<UserProvider>(context, listen: false).dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
 
+    if (userProvider.userData == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    final user = userProvider.user;
+    if (user == null) {
+      return const Scaffold(
+        body: Center(child: Text('No user found')),
+      );
+    }
+
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.only(left: 20, top: 20, right: 20),
+            padding: const EdgeInsets.all(20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -44,7 +70,7 @@ class HomeState extends State<Home> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Hello, ${userProvider.userData!['name']} 👋🏻',
+                          'Hello, ${userProvider.userData?['name'] ?? 'User'} 👋🏻',
                           style: const TextStyle(
                               color: Color(0xFF2F2F2F),
                               fontWeight: FontWeight.bold,
@@ -58,84 +84,86 @@ class HomeState extends State<Home> {
                       ],
                     ),
                     IconButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, NotificationScreen.id);
-                        },
-                        icon: const Icon(Icons.notifications_active_outlined)),
+                      onPressed: () {
+                        Navigator.pushNamed(context, NotificationScreen.id);
+                      },
+                      icon: const Icon(Icons.notifications_active_outlined),
+                    ),
                   ],
                 ),
-                kSizedBox20,
+                const SizedBox(height: 10),
+                const StreamBuilderRow(),
+                const SizedBox(height: 20),
                 const Text(
                   'Popular places',
                   style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                ),
-                StreamBuilderRow(),
-                kSizedBox20,
-                const Text(
-                  'Explore more',
-                  style: TextStyle(fontSize: 20),
                 ),
                 StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
                       .collection('trips')
                       .snapshots(),
                   builder: (context, snapshot) {
-                    List<Container> tripsWidgets = [];
-                    if (snapshot.hasData) {
-                      final trips = snapshot.data?.docs.reversed.toList();
-                      for (var trip in trips!) {
-                        final tripWidget = Container(
-                          margin: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.circular(10)),
-                          child: ListTile(
-                              trailing: Text('\$${trip['price']}'),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        TripDetailsPage(trip.id),
-                                  ),
-                                );
-                              },
-                              contentPadding: const EdgeInsets.all(10),
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text('${trip['nights']} nights'.toString(),
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.blue[300])),
-                                  Text(trip['title'].toString(),
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.grey[600])),
-                                ],
-                              ),
-                              leading: ClipRRect(
-                                borderRadius: BorderRadius.circular(8.0),
-                                child: Hero(
-                                  tag: 'img ${trip['title']} ',
-                                  child: Image.network(
-                                    trip['img'],
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              )),
-                        );
-                        tripsWidgets.add(tripWidget);
-                      }
+                    if (!snapshot.hasData) {
+                      return const Center(child: CircularProgressIndicator());
                     }
-                    return Flexible(
-                      fit: FlexFit.loose,
-                      child: ListView(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        children: tripsWidgets,
-                      ),
+
+                    final trips = snapshot.data?.docs.reversed.toList();
+                    List<Widget> tripsWidgets = [];
+                    for (var trip in trips!) {
+                      final tripWidget = Container(
+                        margin: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: ListTile(
+                          trailing: Text('\$${trip['price']}'),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => TripDetailsPage(trip.id),
+                              ),
+                            );
+                          },
+                          contentPadding: const EdgeInsets.all(10),
+                          title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                '${trip['nights']} nights',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue[300],
+                                ),
+                              ),
+                              Text(
+                                trip['title'].toString(),
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.grey[600],
+                                ),
+                              ),
+                            ],
+                          ),
+                          leading: ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: Hero(
+                              tag: 'img ${trip['title']}',
+                              child: Image.network(
+                                trip['img'],
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                      tripsWidgets.add(tripWidget);
+                    }
+
+                    return Column(
+                      children: tripsWidgets,
                     );
                   },
                 ),
@@ -149,11 +177,13 @@ class HomeState extends State<Home> {
 }
 
 class StreamBuilderRow extends StatefulWidget {
+  const StreamBuilderRow({super.key});
+
   @override
-  _StreamBuilderRowState createState() => _StreamBuilderRowState();
+  StreamBuilderRowState createState() => StreamBuilderRowState();
 }
 
-class _StreamBuilderRowState extends State<StreamBuilderRow> {
+class StreamBuilderRowState extends State<StreamBuilderRow> {
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -163,7 +193,7 @@ class _StreamBuilderRowState extends State<StreamBuilderRow> {
           stream: FirebaseFirestore.instance.collection('trips').snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             }
 
             final trips = snapshot.data?.docs.reversed.toList();
@@ -185,30 +215,28 @@ class _StreamBuilderRowState extends State<StreamBuilderRow> {
                         Container(
                           width: 220,
                           margin: const EdgeInsets.all(10),
-                          child: Hero(
-                            tag: 'img ${trip['title']}',
-                            child: Image.network(
-                              trip['img'],
-                              height: 260.0,
-                              fit: BoxFit.cover,
-                            ),
+                          child: Image.network(
+                            trip['img'],
+                            height: 220.0,
+                            fit: BoxFit.cover,
                           ),
                         ),
-                        Positioned(
-                            top: 20,
-                            right: 15,
-                            width: 40,
-                            height: 40,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: const Color.fromARGB(150, 255, 255, 255),
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              child: IconButton(
-                                icon: const Icon(Icons.favorite_border),
-                                onPressed: () {},
-                              ),
-                            )),
+
+                        // Positioned(
+                        //     top: 20,
+                        //     right: 15,
+                        //     width: 40,
+                        //     height: 40,
+                        //     child: Container(
+                        //       decoration: BoxDecoration(
+                        //         color: const Color.fromARGB(150, 255, 255, 255),
+                        //         borderRadius: BorderRadius.circular(50),
+                        //       ),
+                        //       child: IconButton(
+                        //         icon: const Icon(Icons.favorite_border),
+                        //         onPressed: () {},
+                        //       ),
+                        //     )),
                         Positioned(
                           bottom: 25,
                           left: 20,

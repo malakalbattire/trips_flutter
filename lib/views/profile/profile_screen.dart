@@ -9,7 +9,7 @@ class ProfileScreen extends StatelessWidget {
   static const String id = 'profile_screen';
   final String userId;
 
-  const ProfileScreen({Key? key, required this.userId}) : super(key: key);
+  const ProfileScreen({super.key, required this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -77,8 +77,8 @@ class ProfileScreen extends StatelessWidget {
                             children: [
                               CircleAvatar(
                                 radius: 30,
-                                backgroundColor: const Color(0xFFF1ECF7),
-                                child: const Icon(
+                                backgroundColor: Color(0xFFF1ECF7),
+                                child: Icon(
                                   Icons.person,
                                   size: 30,
                                 ),
@@ -145,8 +145,8 @@ class ProfileScreen extends StatelessWidget {
                       await FirebaseAuth.instance.signOut();
                       Navigator.pushNamed(context, WelcomeScreen.id);
                     },
-                    child: Row(
-                      children: const [
+                    child: const Row(
+                      children: [
                         Text('Sign Out'),
                         Icon(Icons.logout),
                       ],

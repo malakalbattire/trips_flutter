@@ -1,12 +1,9 @@
 import 'package:animation_flutter/utilities/navigation_menu.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:animation_flutter/utilities/constants.dart';
 import 'package:animation_flutter/utilities/rounded_button.dart';
-
-Map<String, bool> favs = {};
 
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';
@@ -20,15 +17,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController passwordController = TextEditingController();
   bool showSpinner = false;
   final _auth = FirebaseAuth.instance;
-
-  //
-
-  @override
-  void initState() {
-    //getItemsLogin();
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,15 +100,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-
-// Future<void> getItemsLogin() async {
-//   await FirebaseFirestore.instance
-//       .collection("users")
-//       .where("email", isEqualTo: FirebaseAuth.instance.currentUser!.email)
-//       .get()
-//       .then((QuerySnapshot querySnapshot) {
-//     for (var element in querySnapshot.docs) {
-//       favs = Map.from(element["favs"]);
-//     }
-//   });
-// }

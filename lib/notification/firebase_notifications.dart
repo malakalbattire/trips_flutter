@@ -31,7 +31,6 @@ class FirebaseNotifications {
       arguments: message,
     );
 
-    print('message ====== ${message.notification!.body}=====');
     await _storeNotification(
       message.notification!.title ?? 'No Title',
       message.notification!.body ?? 'No Body',

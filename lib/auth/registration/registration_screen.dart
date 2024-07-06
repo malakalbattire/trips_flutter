@@ -76,15 +76,6 @@ class RegistrationScreenState extends State<RegistrationScreen> {
         }
       },
     );
-
-    // await FirebaseFirestore.instance.collection("users").add({"favs": favs});
-  }
-
-  @override
-  void initState() {
-    getItems();
-    // TODO: implement initState
-    super.initState();
   }
 
   @override
@@ -142,10 +133,6 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                       });
                       signUp(emailController.text, passwordController.text);
                       try {
-                        // final user = await _auth.signInWithEmailAndPassword(
-                        //     email: emailController.text,
-                        //     password: passwordController.text);
-                        // print(user);
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text('registered successfully! '),
@@ -154,7 +141,6 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                         );
                         Navigator.pushNamed(context, NavigationMenu.id);
                         setState(() {
-                          //print(fullName);
                           showSpinner = false;
                         });
                       } catch (e) {

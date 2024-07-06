@@ -4,12 +4,11 @@ import 'package:animation_flutter/views/profile/profile_screen.dart';
 import '../auth/login/login_screen.dart';
 import 'package:animation_flutter/views/profile/user_provider.dart';
 import 'package:provider/provider.dart';
-//import 'package:animation_flutter/auth/welcome/welcome_screen.dart';
 
 class AuthenticationWrapper extends StatelessWidget {
   static const String id = 'authentication_wrapper';
 
-  const AuthenticationWrapper({Key? key}) : super(key: key);
+  const AuthenticationWrapper({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -2,7 +2,7 @@ import 'package:animation_flutter/auth/welcome/welcome_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'auth/login/login_screen.dart';
+import 'auth/login/admin_login_screen.dart';
 import 'auth/registration/registration_screen.dart';
 import 'views/home/home.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -14,6 +14,9 @@ import 'views/profile/edit_profile_screen.dart';
 import 'views/saved/favorites_provider.dart';
 import 'views/profile/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'admin/admin_screen.dart';
+import 'trips/add_trips_screen.dart';
+import 'auth/login/login_screen.dart';
 
 final uId = FirebaseAuth.instance.currentUser!.uid;
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -66,12 +69,15 @@ class _MyAppState extends State<MyApp> {
         NavigationMenu.id: (context) => const NavigationMenu(),
         WelcomeScreen.id: (context) => const WelcomeScreen(),
         LoginScreen.id: (context) => const LoginScreen(),
+        AdminLoginScreen.id: (context) => const AdminLoginScreen(),
         RegistrationScreen.id: (context) => const RegistrationScreen(),
         Home.id: (context) => const Home(),
         NotificationScreen.id: (context) => const NotificationScreen(),
         SavedScreen.id: (context) => SavedScreen(),
         AuthenticationWrapper.id: (context) => const AuthenticationWrapper(),
         EditProfileScreen.id: (context) => const EditProfileScreen(),
+        AdminScreen.id: (context) => AdminScreen(),
+        AddTripsScreen.id: (context) => AddTripsScreen(),
       },
     );
   }
