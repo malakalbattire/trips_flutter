@@ -8,6 +8,7 @@ import 'package:animation_flutter/utilities/rounded_button.dart';
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';
   const LoginScreen({super.key});
+
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -15,6 +16,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   bool showSpinner = false;
   final _auth = FirebaseAuth.instance;
 
@@ -28,70 +30,92 @@ class _LoginScreenState extends State<LoginScreen> {
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(30.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Hero(
-                    tag: 'logo',
-                    child: SizedBox(
-                      height: 200.0,
-                      child: Image.asset('images/logo.png'),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Hero(
+                      tag: 'logo',
+                      child: SizedBox(
+                        height: 200.0,
+                        child: Image.asset('images/logo.png'),
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  TextField(
-                    keyboardType: TextInputType.emailAddress,
-                    controller: emailController,
-                    decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'Enter Your Email.'),
-                  ),
-                  kSizedBox20,
-                  TextField(
-                    obscureText: true,
-                    controller: passwordController,
-                    decoration: kTextFieldDecoration.copyWith(
-                      hintText: 'Enter your password.',
+                    const SizedBox(height: 10.0),
+                    TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      controller: emailController,
+                      decoration: kTextFieldDecoration.copyWith(
+                        hintText: 'Enter Your Email.',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Email is required';
+                        }
+                        return null;
+                      },
                     ),
-                  ),
-                  kSizedBox30,
-                  RoundedButton(
-                    title: 'Log In ',
-                    colour: Colors.lightBlueAccent,
-                    onPressed: () async {
-                      setState(() {
-                        showSpinner = true;
-                      });
-                      try {
-                        final user = await _auth.signInWithEmailAndPassword(
-                            email: emailController.text,
-                            password: passwordController.text);
-                        print(user);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('logged in successfully '),
-                            backgroundColor: Colors.green,
-                          ),
-                        );
-                        Navigator.pushNamed(context, NavigationMenu.id);
-                        setState(() {
-                          showSpinner = false;
-                        });
-                      } catch (e) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(e.toString()),
-                            backgroundColor: Colors.red,
-                          ),
-                        );
-                        setState(() {
-                          showSpinner = false;
-                        });
-                      }
-                    },
-                  ),
-                ],
+                    kSizedBox20,
+                    TextFormField(
+                      obscureText: true,
+                      controller: passwordController,
+                      decoration: kTextFieldDecoration.copyWith(
+                        hintText: 'Enter your password.',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Password is required';
+                        }
+                        return null;
+                      },
+                    ),
+                    kSizedBox30,
+                    RoundedButton(
+                      title: 'Log In',
+                      colour: Colors.lightBlueAccent,
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          setState(() {
+                            showSpinner = true;
+                          });
+                          try {
+                            final user = await _auth.signInWithEmailAndPassword(
+                              email: emailController.text,
+                              password: passwordController.text,
+                            );
+                            if (user.user != null) {
+                              if (user.user!.email == 'admin@gmail.com') {
+                                Navigator.pushNamed(context, NavigationMenu.id);
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Logged in successfully'),
+                                    backgroundColor: Colors.green,
+                                  ),
+                                );
+                                Navigator.pushNamed(context, NavigationMenu.id);
+                              }
+                            }
+                            setState(() {
+                              showSpinner = false;
+                            });
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(e.toString()),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                            setState(() {
+                              showSpinner = false;
+                            });
+                          }
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

@@ -26,14 +26,10 @@ class HomeState extends State<Home> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Add any dependencies handling code here if needed
   }
 
   @override
   void dispose() {
-    // Avoid using Provider.of(context) directly in dispose()
-    // Use a separate reference if you need to dispose of the provider
-    // Provider.of<UserProvider>(context, listen: false).dispose();
     super.dispose();
   }
 

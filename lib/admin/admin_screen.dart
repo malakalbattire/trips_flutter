@@ -5,6 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class AdminScreen extends StatefulWidget {
   static const String id = 'admin_screen';
 
+  const AdminScreen({super.key});
+
   @override
   State<AdminScreen> createState() => _AdminScreenState();
 }
@@ -13,42 +15,41 @@ class _AdminScreenState extends State<AdminScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Admin Page'),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Current Trips',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                IconButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.grey.shade300)),
-                    onPressed: () =>
-                        Navigator.pushNamed(context, AddTripsScreen.id),
-                    icon: const Icon(Icons.add))
-              ],
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Current Trips',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  IconButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              WidgetStateProperty.all(Colors.grey.shade300)),
+                      onPressed: () =>
+                          Navigator.pushNamed(context, AddTripsScreen.id),
+                      icon: const Icon(Icons.add))
+                ],
+              ),
             ),
-          ),
-          const Expanded(
-            child: GetTrips(),
-          ),
-        ],
+            const Expanded(
+              child: GetTrips(),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
 class GetTrips extends StatelessWidget {
-  const GetTrips({Key? key}) : super(key: key);
+  const GetTrips({super.key});
 
   @override
   Widget build(BuildContext context) {

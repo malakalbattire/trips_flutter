@@ -1,4 +1,3 @@
-import 'package:animation_flutter/auth/login/admin_login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:animation_flutter/auth/login/login_screen.dart';
 import 'package:animation_flutter/auth/registration/registration_screen.dart';
@@ -39,17 +38,6 @@ class WelcomeScreen extends StatelessWidget {
                       onPressed: () {
                         Navigator.pushNamed(context, RegistrationScreen.id);
                       }),
-                  InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(context, AdminLoginScreen.id);
-                    },
-                    child: const Text(
-                      'login as Admin',
-                      style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          color: Colors.blue),
-                    ),
-                  )
                 ],
               ),
             ),

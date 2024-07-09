@@ -1,8 +1,8 @@
+import 'package:animation_flutter/admin/users_details.dart';
 import 'package:animation_flutter/auth/welcome/welcome_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'auth/login/admin_login_screen.dart';
 import 'auth/registration/registration_screen.dart';
 import 'views/home/home.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -42,8 +42,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => FavoritesProvider()),
-        ChangeNotifierProvider(
-            create: (_) => UserProvider()), // Add UserProvider here
+        ChangeNotifierProvider(create: (_) => UserProvider()),
       ],
       child: const MyApp(),
     ),
@@ -69,7 +68,6 @@ class _MyAppState extends State<MyApp> {
         NavigationMenu.id: (context) => const NavigationMenu(),
         WelcomeScreen.id: (context) => const WelcomeScreen(),
         LoginScreen.id: (context) => const LoginScreen(),
-        AdminLoginScreen.id: (context) => const AdminLoginScreen(),
         RegistrationScreen.id: (context) => const RegistrationScreen(),
         Home.id: (context) => const Home(),
         NotificationScreen.id: (context) => const NotificationScreen(),
@@ -78,6 +76,7 @@ class _MyAppState extends State<MyApp> {
         EditProfileScreen.id: (context) => const EditProfileScreen(),
         AdminScreen.id: (context) => AdminScreen(),
         AddTripsScreen.id: (context) => AddTripsScreen(),
+        UsersDetails.id: (context) => UsersDetails(),
       },
     );
   }
