@@ -2,6 +2,7 @@ import 'package:animation_flutter/admin/users_details.dart';
 import 'package:animation_flutter/auth/welcome/welcome_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'auth/registration/registration_screen.dart';
 import 'views/home/home.dart';
@@ -22,6 +23,8 @@ final uId = FirebaseAuth.instance.currentUser!.uid;
 final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
+  debugPaintSizeEnabled = true;
+
   WidgetsFlutterBinding.ensureInitialized();
 
   if (kIsWeb) {

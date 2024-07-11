@@ -1,5 +1,6 @@
 import 'package:animation_flutter/utilities/navigation_menu.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:animation_flutter/utilities/rounded_button.dart';
@@ -32,7 +33,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Profile updated successfully')));
       } catch (e) {
-        print(e);
+        if (kDebugMode) {
+          print(e);
+        }
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Error: $e')));
       }

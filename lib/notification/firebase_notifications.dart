@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:animation_flutter/Notification/notifications_screen.dart';
 import 'package:animation_flutter/main.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class FirebaseNotifications {
@@ -20,7 +21,9 @@ class FirebaseNotifications {
   Future<void> initNotifications() async {
     await _firebaseMessaging.requestPermission();
     final token = await _firebaseMessaging.getToken();
-    print('Device token:============= $token=======');
+    if (kDebugMode) {
+      print('Device token:============= $token=======');
+    }
     initPushNotifications();
   }
 

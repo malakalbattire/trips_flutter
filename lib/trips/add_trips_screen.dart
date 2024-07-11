@@ -4,6 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
+import 'package:animation_flutter/utilities/rounded_button.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import 'map_screen.dart';
 
 class AddTripsScreen extends StatefulWidget {
   static const String id = 'add_trip_screen';
@@ -22,9 +26,14 @@ class AddTripScreenState extends State<AddTripsScreen> {
   final TextEditingController nightsController = TextEditingController();
   File? _image;
   bool _isUploading = false;
+  LatLng? _selectedLocation;
+  bool _isImageSelected = true;
+  bool _isLocationSelected = true;
 
   Future<void> addTrip() async {
-    if (_formKey.currentState?.validate() ?? false) {
+    if ((_formKey.currentState?.validate() ?? false) &&
+        _image != null &&
+        _selectedLocation != null) {
       setState(() {
         _isUploading = true;
       });
@@ -44,6 +53,8 @@ class AddTripScreenState extends State<AddTripsScreen> {
         'description': descriptionController.text,
         'price': price,
         'nights': nights,
+        'latitude': _selectedLocation!.latitude,
+        'longitude': _selectedLocation!.longitude,
         'img': imageUrl,
       }).then((value) {
         Navigator.pop(context);
@@ -60,6 +71,27 @@ class AddTripScreenState extends State<AddTripsScreen> {
           _isUploading = false;
         });
       });
+    } else {
+      setState(() {
+        _isImageSelected = _image != null;
+        _isLocationSelected = _selectedLocation != null;
+      });
+      if (_image == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please select an image'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      if (_selectedLocation == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please select a location'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
@@ -81,10 +113,25 @@ class AddTripScreenState extends State<AddTripsScreen> {
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
+        _isImageSelected = true;
       } else {
         print('No image selected.');
       }
     });
+  }
+
+  Future<void> _selectLocation() async {
+    final LatLng? result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MapScreen()),
+    );
+
+    if (result != null) {
+      setState(() {
+        _selectedLocation = result;
+        _isLocationSelected = true;
+      });
+    }
   }
 
   String? _validateTextField(String? value, String fieldName) {
@@ -139,6 +186,24 @@ class AddTripScreenState extends State<AddTripsScreen> {
                 validator: (value) => _validateTextField(value, 'Nights'),
               ),
               const SizedBox(height: 10),
+              Column(
+                children: [
+                  ElevatedButton(
+                    onPressed: _selectLocation,
+                    child: Text(_selectedLocation == null
+                        ? 'Select Location'
+                        : 'Change Location'),
+                  ),
+                  if (_selectedLocation != null)
+                    Text(
+                        'Location: (${_selectedLocation!.latitude.toStringAsFixed(3)}, ${_selectedLocation!.longitude.toStringAsFixed(3)})'),
+                ],
+              ),
+              if (!_isLocationSelected)
+                const Text(
+                  'Location is required',
+                  style: TextStyle(color: Colors.red),
+                ),
               ElevatedButton(
                 onPressed: pickImage,
                 child: const Text('Pick Image'),
@@ -151,6 +216,11 @@ class AddTripScreenState extends State<AddTripsScreen> {
                     height: 200,
                   ),
                 ),
+              if (!_isImageSelected)
+                const Text(
+                  'Image is required',
+                  style: TextStyle(color: Colors.red),
+                ),
               const SizedBox(height: 10),
               if (_isUploading)
                 const Center(child: CircularProgressIndicator()),
@@ -160,39 +230,6 @@ class AddTripScreenState extends State<AddTripsScreen> {
                 colour: Colors.lightBlueAccent,
               ),
             ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class RoundedButton extends StatelessWidget {
-  final VoidCallback onPressed;
-  final String title;
-  final Color colour;
-
-  const RoundedButton({
-    required this.onPressed,
-    required this.title,
-    required this.colour,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
-      child: Material(
-        elevation: 5.0,
-        color: colour,
-        borderRadius: BorderRadius.circular(30.0),
-        child: MaterialButton(
-          onPressed: onPressed,
-          minWidth: 200.0,
-          height: 42.0,
-          child: Text(
-            title,
-            style: const TextStyle(color: Colors.white),
           ),
         ),
       ),
