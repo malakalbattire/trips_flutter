@@ -8,8 +8,10 @@ import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class TripDetailsPage extends StatefulWidget {
+  static const String id = 'trip_details_page';
   final String tripId;
-  TripDetailsPage(this.tripId, {super.key});
+
+  const TripDetailsPage(this.tripId, {super.key});
 
   @override
   _TripDetailsPageState createState() => _TripDetailsPageState();
@@ -19,6 +21,7 @@ class _TripDetailsPageState extends State<TripDetailsPage> {
   final CollectionReference _tripsCollection =
       FirebaseFirestore.instance.collection('trips');
   LocationData? _currentLocation;
+  bool _isExpanded = false;
 
   @override
   void initState() {
@@ -30,13 +33,13 @@ class _TripDetailsPageState extends State<TripDetailsPage> {
     Location location = Location();
     LocationData locationData;
 
-    bool _serviceEnabled;
+    bool serviceEnabled;
     PermissionStatus permissionGranted;
 
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
         return;
       }
     }
@@ -56,6 +59,7 @@ class _TripDetailsPageState extends State<TripDetailsPage> {
   }
 
   static const LatLng _currentLoc = LatLng(37.4219983, -122.084);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,7 +120,7 @@ class _TripDetailsPageState extends State<TripDetailsPage> {
                               tag: 'img ${tripData['title']}',
                               child: Image.network(
                                 tripData['img'],
-                                width: double.infinity,
+                                fit: BoxFit.cover,
                               ),
                             ),
                           ),
@@ -167,10 +171,7 @@ class _TripDetailsPageState extends State<TripDetailsPage> {
                             ],
                           ),
                           const SizedBox(height: 20),
-                          Text(
-                            tripData['description'],
-                            style: const TextStyle(fontSize: 16),
-                          ),
+                          _buildDescription(tripData['description']),
                           const SizedBox(height: 20),
                           _currentLocation == null
                               ? const Center(child: CircularProgressIndicator())
@@ -235,5 +236,37 @@ class _TripDetailsPageState extends State<TripDetailsPage> {
         width: 5,
       ),
     };
+  }
+
+  Widget _buildDescription(String description) {
+    final words = description.split(' ');
+    final previewText = words.length > 30
+        ? '${words.sublist(0, 30).join(' ')}...'
+        : description;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          _isExpanded ? description : previewText,
+          style: const TextStyle(fontSize: 16),
+        ),
+        if (words.length > 30)
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                _isExpanded = !_isExpanded;
+              });
+            },
+            child: Text(
+              _isExpanded ? 'See Less' : 'See More',
+              style: const TextStyle(
+                color: Colors.blue,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+      ],
+    );
   }
 }

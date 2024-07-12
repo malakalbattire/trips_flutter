@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'user_detail.dart';
+import 'user_details.dart';
 
 class UsersDetails extends StatelessWidget {
   static const String id = 'users_details';
@@ -40,7 +40,7 @@ class UsersDetails extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => UserDetailScreen(
+                      builder: (context) => UserDetailsScreen(
                         uid: document.id,
                       ),
                     ),

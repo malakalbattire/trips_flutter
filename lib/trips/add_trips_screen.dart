@@ -123,7 +123,7 @@ class AddTripScreenState extends State<AddTripsScreen> {
   Future<void> _selectLocation() async {
     final LatLng? result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MapScreen()),
+      MaterialPageRoute(builder: (context) => const MapScreen()),
     );
 
     if (result != null) {

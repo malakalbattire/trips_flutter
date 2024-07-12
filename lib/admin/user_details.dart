@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:animation_flutter/trips/trip_details.dart';
 
-class UserDetailScreen extends StatelessWidget {
+class UserDetailsScreen extends StatelessWidget {
   final String uid;
 
-  const UserDetailScreen({super.key, required this.uid});
+  const UserDetailsScreen({super.key, required this.uid});
 
   Future<DocumentSnapshot> getUserData() async {
     return await FirebaseFirestore.instance.collection('users').doc(uid).get();
@@ -72,10 +72,35 @@ class UserDetailScreen extends StatelessWidget {
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: Text(
-                              fav,
-                              style: const TextStyle(
-                                  fontSize: 16, color: Colors.blue),
+                            child: StreamBuilder<DocumentSnapshot>(
+                              stream: FirebaseFirestore.instance
+                                  .collection('trips')
+                                  .doc(fav)
+                                  .snapshots(),
+                              builder: (context,
+                                  AsyncSnapshot<DocumentSnapshot>
+                                      tripSnapshot) {
+                                if (tripSnapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const CircularProgressIndicator();
+                                }
+
+                                if (!tripSnapshot.hasData ||
+                                    !tripSnapshot.data!.exists) {
+                                  return const Text(' not exist');
+                                }
+
+                                var tripData = tripSnapshot.data!.data()
+                                    as Map<String, dynamic>;
+
+                                if (!tripData.containsKey('title')) {
+                                  return const Text('title field is missing ');
+                                }
+
+                                var title = tripData['title'];
+
+                                return Text(title);
+                              },
                             ),
                           ),
                         ),

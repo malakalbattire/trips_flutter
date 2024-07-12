@@ -1,8 +1,7 @@
 import 'package:animation_flutter/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-final usersRef = FirebaseFirestore.instance.collection('users');
+import 'package:animation_flutter/trips/trip_details.dart'; // Import the TripDetailsPage
 
 class NotificationScreen extends StatefulWidget {
   static const String id = 'notification_screen';
@@ -14,26 +13,41 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
-  List<dynamic> users = [];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
         child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('notifications')
-                  .snapshots(),
-              builder: (context, snapshot) {
-                List<Card> notisWidgets = [];
-                if (snapshot.hasData) {
-                  final notis = snapshot.data?.docs.reversed.toList();
-                  for (var noti in notis!) {
-                    final notiWidget = Card(
-                        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('notifications')
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                return const Center(
+                  child: Text(
+                    'There are no notifications',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                );
+              }
+
+              final notis = snapshot.data!.docs.reversed.toList();
+              List<InkWell> notisWidgets = [];
+              for (var noti in notis) {
+                final notiWidget = InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TripDetailsPage(noti['tripId']),
+                      ),
+                    );
+                  },
+                  child: Card(
+                    child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,16 +64,18 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           ),
                         ],
                       ),
-                    ));
-                    notisWidgets.add(notiWidget);
-                  }
-                }
-
-                return ListView(
-                  children: notisWidgets,
+                    ),
+                  ),
                 );
-              },
-            )),
+                notisWidgets.add(notiWidget);
+              }
+
+              return ListView(
+                children: notisWidgets,
+              );
+            },
+          ),
+        ),
       ),
     );
   }

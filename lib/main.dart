@@ -14,12 +14,11 @@ import 'package:animation_flutter/utilities/authentication_wrapper.dart';
 import 'views/profile/edit_profile_screen.dart';
 import 'views/saved/favorites_provider.dart';
 import 'views/profile/user_provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'admin/admin_screen.dart';
 import 'trips/add_trips_screen.dart';
 import 'auth/login/login_screen.dart';
+import 'package:animation_flutter/notification/firebase_notifications.dart';
 
-final uId = FirebaseAuth.instance.currentUser!.uid;
 final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
@@ -40,6 +39,9 @@ void main() async {
   } else {
     await Firebase.initializeApp();
   }
+
+  FirebaseNotifications firebaseNotifications = FirebaseNotifications();
+  await firebaseNotifications.initNotifications();
 
   runApp(
     MultiProvider(
@@ -78,7 +80,7 @@ class _MyAppState extends State<MyApp> {
         AuthenticationWrapper.id: (context) => const AuthenticationWrapper(),
         EditProfileScreen.id: (context) => const EditProfileScreen(),
         AdminScreen.id: (context) => AdminScreen(),
-        AddTripsScreen.id: (context) => AddTripsScreen(),
+        AddTripsScreen.id: (context) => const AddTripsScreen(),
         UsersDetails.id: (context) => UsersDetails(),
       },
     );
