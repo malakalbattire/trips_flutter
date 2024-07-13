@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:provider/provider.dart';
-import 'package:animation_flutter/views/saved/favorites_provider.dart';
+import 'package:animation_flutter/providers/favorites_provider.dart';
 import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 

@@ -1,4 +1,4 @@
-import 'package:animation_flutter/trips/add_trips_screen.dart';
+import 'package:animation_flutter/models/trips/add_trips_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

@@ -1,11 +1,11 @@
 import 'dart:convert';
-import 'package:animation_flutter/trips/trip_details.dart';
+import 'package:animation_flutter/models/trips/trip_details.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:animation_flutter/notification/notifications_screen.dart';
+import 'package:animation_flutter/views/notifications_screen.dart';
 import 'package:animation_flutter/main.dart';
 
 class FirebaseNotifications {
@@ -31,14 +31,19 @@ class FirebaseNotifications {
 
   Future<void> handleMessage(RemoteMessage? message) async {
     if (message == null) return;
-    navigatorKey.currentState?.pushNamed(
-      TripDetailsPage.id,
-      arguments: message,
-    );
+    final notification = message.notification;
+    if (notification == null) return;
+
+    if (navigatorKey.currentState?.mounted ?? false) {
+      navigatorKey.currentState?.pushNamed(
+        TripDetailsPage.id,
+        arguments: message,
+      );
+    }
 
     await _storeNotification(
-      message.notification!.title ?? 'No Title',
-      message.notification!.body ?? 'No Body',
+      notification.title ?? 'No Title',
+      notification.body ?? 'No Body',
     );
   }
 
@@ -79,31 +84,33 @@ class FirebaseNotifications {
 
   Future<void> _showForegroundNotificationDialog(
       RemoteNotification notification) async {
-    showDialog(
-      context: navigatorKey.currentContext!,
-      builder: (context) => AlertDialog(
-        title: Text(notification.title ?? 'No Title'),
-        content: Text(notification.body ?? 'No Body'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text('Dismiss'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              Navigator.pushNamed(
-                context,
-                NotificationScreen.id,
-              );
-            },
-            child: const Text('View'),
-          ),
-        ],
-      ),
-    );
+    if (navigatorKey.currentContext != null) {
+      showDialog(
+        context: navigatorKey.currentContext!,
+        builder: (context) => AlertDialog(
+          title: Text(notification.title ?? 'No Title'),
+          content: Text(notification.body ?? 'No Body'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Dismiss'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.pushNamed(
+                  context,
+                  NotificationScreen.id,
+                );
+              },
+              child: const Text('View'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   Future<void> initFirestoreListeners() async {

@@ -1,7 +1,7 @@
 import 'package:animation_flutter/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:animation_flutter/trips/trip_details.dart'; // Import the TripDetailsPage
+import 'package:animation_flutter/models/trips/trip_details.dart'; // Import the TripDetailsPage
 
 class NotificationScreen extends StatefulWidget {
   static const String id = 'notification_screen';
@@ -23,6 +23,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           child: StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection('notifications')
+                .orderBy('timestamp', descending: false)
                 .snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {

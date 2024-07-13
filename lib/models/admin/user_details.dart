@@ -2,7 +2,7 @@ import 'package:animation_flutter/utilities/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:animation_flutter/trips/trip_details.dart';
+import 'package:animation_flutter/models/trips/trip_details.dart';
 
 class UserDetailsScreen extends StatelessWidget {
   final String uid;

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:animation_flutter/admin/admin_screen.dart';
-import 'package:animation_flutter/admin/users_details.dart';
-import 'package:animation_flutter/views/home/home.dart';
-import 'package:animation_flutter/views/saved/saved.dart';
+import 'package:animation_flutter/models/admin/admin_screen.dart';
+import 'package:animation_flutter/models/admin/users_details.dart';
+import 'package:animation_flutter/views/home_screen.dart';
+import 'package:animation_flutter/views/saved_screen.dart';
 import 'package:get/get.dart';
-import 'authentication_wrapper.dart';
+import '../utilities/authentication_wrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class NavigationMenu extends StatelessWidget {

@@ -1,9 +1,10 @@
+import 'package:animation_flutter/utilities/constants.dart';
 import 'package:animation_flutter/views/profile/edit_profile_screen.dart';
-import 'package:animation_flutter/auth/welcome/welcome_screen.dart';
+import 'package:animation_flutter/views/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-import 'user_provider.dart';
+import '../../providers/user_provider.dart';
 
 class ProfileScreen extends StatelessWidget {
   static const String id = 'profile_screen';
@@ -130,11 +131,11 @@ class ProfileScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    kSizedBox10,
                   ],
                 ),
               ),
-            const SizedBox(height: 20),
+            kSizedBox20,
             Padding(
               padding: const EdgeInsets.only(bottom: 20.0),
               child: Row(

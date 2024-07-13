@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:animation_flutter/views/profile/profile_screen.dart';
-import '../auth/login/login_screen.dart';
-import 'package:animation_flutter/views/profile/user_provider.dart';
+import '../views/login_screen.dart';
+import 'package:animation_flutter/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class AuthenticationWrapper extends StatelessWidget {

@@ -1,9 +1,9 @@
-import 'package:animation_flutter/utilities/navigation_menu.dart';
+import 'package:animation_flutter/widgets/navigation_menu.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:animation_flutter/utilities/constants.dart';
-import 'package:animation_flutter/utilities/rounded_button.dart';
+import 'package:animation_flutter/widgets/rounded_button.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';

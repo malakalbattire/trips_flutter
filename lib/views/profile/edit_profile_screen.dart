@@ -1,9 +1,9 @@
-import 'package:animation_flutter/utilities/navigation_menu.dart';
+import 'package:animation_flutter/widgets/navigation_menu.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:animation_flutter/utilities/rounded_button.dart';
+import 'package:animation_flutter/widgets/rounded_button.dart';
 import 'package:animation_flutter/utilities/constants.dart';
 
 final userId = FirebaseAuth.instance.currentUser!.uid;
