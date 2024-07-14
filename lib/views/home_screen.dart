@@ -1,5 +1,5 @@
-import 'package:animation_flutter/Notification/notifications_screen.dart';
 import 'package:animation_flutter/utilities/constants.dart';
+import 'package:animation_flutter/views/notifications_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:animation_flutter/providers/user_provider.dart';
