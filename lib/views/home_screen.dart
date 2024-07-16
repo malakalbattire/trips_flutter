@@ -9,29 +9,20 @@ import '../widgets/stream_builder_row.dart';
 
 class Home extends StatefulWidget {
   static const String id = 'home_screen';
-  const Home({super.key});
+  final String userId;
+  const Home({super.key, required this.userId});
 
   @override
-  HomeState createState() => HomeState();
+  _HomeState createState() => _HomeState();
 }
 
-class HomeState extends State<Home> {
+class _HomeState extends State<Home> {
   late String currentUserId;
 
   @override
   void initState() {
     super.initState();
     currentUserId = FirebaseAuth.instance.currentUser?.uid ?? '';
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   @override

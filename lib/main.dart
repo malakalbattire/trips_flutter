@@ -1,4 +1,4 @@
-import 'package:animation_flutter/routes.dart';
+import 'package:animation_flutter/utilities/routes.dart';
 import 'package:animation_flutter/views/welcome_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
@@ -55,7 +56,9 @@ class AddTripScreenState extends State<AddTripsScreen> {
 
         Navigator.pop(context);
       } catch (error) {
-        print("Failed to add trip: $error");
+        if (kDebugMode) {
+          print("Failed to add trip: $error");
+        }
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Failed to add trip'),
@@ -102,8 +105,8 @@ class AddTripScreenState extends State<AddTripsScreen> {
   }
 
   Future<void> pickImage() async {
-    final ImagePicker _picker = ImagePicker();
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    final ImagePicker picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     setState(() {
       if (pickedFile != null) {
