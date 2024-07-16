@@ -113,7 +113,9 @@ class AddTripScreenState extends State<AddTripsScreen> {
         _image = File(pickedFile.path);
         _isImageSelected = true;
       } else {
-        print('No image selected.');
+        if (kDebugMode) {
+          print('No image selected.');
+        }
       }
     });
   }

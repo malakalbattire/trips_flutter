@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+//import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'user_details.dart';
@@ -30,9 +30,9 @@ class UsersDetails extends StatelessWidget {
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
               Map<String, dynamic> data =
                   document.data() as Map<String, dynamic>;
-              if (kDebugMode) {
-                print(data);
-              }
+              // if (kDebugMode) {
+              //   print(data);
+              // }
               return ListTile(
                 title: Text(data['name']),
                 subtitle: Text(data['email']),

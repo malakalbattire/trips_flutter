@@ -14,10 +14,10 @@ class TripDetailsPage extends StatefulWidget {
   const TripDetailsPage(this.tripId, {super.key});
 
   @override
-  _TripDetailsPageState createState() => _TripDetailsPageState();
+  TripDetailsPageState createState() => TripDetailsPageState();
 }
 
-class _TripDetailsPageState extends State<TripDetailsPage> {
+class TripDetailsPageState extends State<TripDetailsPage> {
   final CollectionReference _tripsCollection =
       FirebaseFirestore.instance.collection('trips');
   LocationData? _currentLocation;
