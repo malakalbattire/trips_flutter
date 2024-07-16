@@ -22,9 +22,17 @@ class FavoritesProvider with ChangeNotifier {
   }
 
   void _fetchFavorites() async {
-    final userDoc = await _usersCollection.doc(user?.uid).get();
-    final userData = userDoc.data() as Map<String, dynamic>;
-    _favorites = Map<String, bool>.from(userData['favs'] ?? {});
+    if (user == null) return;
+
+    final userDoc = await _usersCollection.doc(user!.uid).get();
+    final userData = userDoc.data() as Map<String, dynamic>?;
+
+    if (userData != null && userData.containsKey('favs')) {
+      _favorites = Map<String, bool>.from(userData['favs']);
+    } else {
+      _favorites = {};
+    }
+
     notifyListeners();
   }
 
@@ -39,7 +47,7 @@ class FavoritesProvider with ChangeNotifier {
       await _tripsCollection.doc(tripId).update({'isFav': true});
     }
 
-    await _usersCollection.doc(user?.uid).update({'favs': _favorites});
+    await _usersCollection.doc(user!.uid).update({'favs': _favorites});
     notifyListeners();
   }
 }

@@ -6,8 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:animation_flutter/widgets/rounded_button.dart';
 import 'package:animation_flutter/utilities/constants.dart';
 
-final userId = FirebaseAuth.instance.currentUser!.uid;
-
 class EditProfileScreen extends StatefulWidget {
   static const String id = 'edit_profile_screen';
   const EditProfileScreen({super.key});
@@ -23,6 +21,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Future<void> _updateUserProfile() async {
     if (_formKey.currentState!.validate()) {
       try {
+        final userId = FirebaseAuth.instance.currentUser!.uid;
         await FirebaseFirestore.instance
             .collection('users')
             .doc(userId)
