@@ -6,7 +6,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 import 'package:animation_flutter/widgets/rounded_button.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 import 'map_screen.dart';
 
 class AddTripsScreen extends StatefulWidget {
@@ -38,27 +37,24 @@ class AddTripScreenState extends State<AddTripsScreen> {
         _isUploading = true;
       });
 
-      String? imageUrl;
-      if (_image != null) {
-        imageUrl = await uploadImageToStorage(_image!);
-      }
+      try {
+        String imageUrl = await uploadImageToStorage(_image!);
 
-      String priceText = priceController.text;
-      int price = int.parse(priceText);
-      String nightText = nightsController.text;
-      int nights = int.parse(nightText);
+        int price = int.parse(priceController.text);
+        int nights = int.parse(nightsController.text);
 
-      FirebaseFirestore.instance.collection('trips').add({
-        'title': titleController.text,
-        'description': descriptionController.text,
-        'price': price,
-        'nights': nights,
-        'latitude': _selectedLocation!.latitude,
-        'longitude': _selectedLocation!.longitude,
-        'img': imageUrl,
-      }).then((value) {
+        await FirebaseFirestore.instance.collection('trips').add({
+          'title': titleController.text,
+          'description': descriptionController.text,
+          'price': price,
+          'nights': nights,
+          'latitude': _selectedLocation!.latitude,
+          'longitude': _selectedLocation!.longitude,
+          'img': imageUrl,
+        });
+
         Navigator.pop(context);
-      }).catchError((error) {
+      } catch (error) {
         print("Failed to add trip: $error");
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -66,11 +62,11 @@ class AddTripScreenState extends State<AddTripsScreen> {
             backgroundColor: Colors.red,
           ),
         );
-      }).whenComplete(() {
+      } finally {
         setState(() {
           _isUploading = false;
         });
-      });
+      }
     } else {
       setState(() {
         _isImageSelected = _image != null;
@@ -102,8 +98,7 @@ class AddTripScreenState extends State<AddTripsScreen> {
 
     UploadTask uploadTask = storageReference.putFile(image);
     TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
-    String imageUrl = await taskSnapshot.ref.getDownloadURL();
-    return imageUrl;
+    return await taskSnapshot.ref.getDownloadURL();
   }
 
   Future<void> pickImage() async {

@@ -1,16 +1,11 @@
 import 'dart:convert';
-import 'package:animation_flutter/models/trips/trip_details.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter/material.dart';
-import 'package:animation_flutter/views/notifications_screen.dart';
-import 'package:animation_flutter/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FirebaseNotifications {
   final _firebaseMessaging = FirebaseMessaging.instance;
-
   final _androidChannel = const AndroidNotificationChannel(
     'high_importance_channel',
     'High Importance Notifications',
@@ -19,117 +14,52 @@ class FirebaseNotifications {
   );
   final _localNotifications = FlutterLocalNotificationsPlugin();
 
+  FirebaseNotifications() {
+    initializeLocalNotifications();
+  }
+
+  Future<void> initializeLocalNotifications() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@drawable/ic_launcher');
+
+    final InitializationSettings initializationSettings =
+        InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
+
+    await _localNotifications.initialize(initializationSettings);
+  }
+
   Future<void> initNotifications() async {
     await _firebaseMessaging.requestPermission();
-    final token = await _firebaseMessaging.getToken();
-    if (kDebugMode) {
-      print('Device token: $token');
-    }
-    initPushNotifications();
+
     initFirestoreListeners();
   }
 
-  Future<void> handleMessage(RemoteMessage? message) async {
-    if (message == null) return;
-    final notification = message.notification;
-    if (notification == null) return;
-
-    if (navigatorKey.currentState?.mounted ?? false) {
-      navigatorKey.currentState?.pushNamed(
-        TripDetailsPage.id,
-        arguments: message,
-      );
-    }
-
-    await _storeNotification(
-      notification.title ?? 'No Title',
-      notification.body ?? 'No Body',
-    );
-  }
-
-  Future<void> _storeNotification(String title, String body) async {
-    await FirebaseFirestore.instance.collection('notifications').add({
-      'title': title,
-      'body': body,
-      'timestamp': FieldValue.serverTimestamp(),
-    });
-  }
-
-  Future<void> initPushNotifications() async {
-    FirebaseMessaging.instance.getInitialMessage().then(handleMessage);
-    FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
-
-    FirebaseMessaging.onMessage.listen((message) {
-      final notification = message.notification;
-
-      if (notification == null) return;
-
-      _localNotifications.show(
-        notification.hashCode,
-        notification.title,
-        notification.body,
-        NotificationDetails(
-          android: AndroidNotificationDetails(
-            _androidChannel.id,
-            _androidChannel.name,
-            channelDescription: _androidChannel.description,
-            icon: '@drawable/ic_launcher',
-          ),
-        ),
-        payload: jsonEncode(message.data),
-      );
-      _showForegroundNotificationDialog(notification);
-    });
-  }
-
-  Future<void> _showForegroundNotificationDialog(
-      RemoteNotification notification) async {
-    if (navigatorKey.currentContext != null) {
-      showDialog(
-        context: navigatorKey.currentContext!,
-        builder: (context) => AlertDialog(
-          title: Text(notification.title ?? 'No Title'),
-          content: Text(notification.body ?? 'No Body'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Dismiss'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.pushNamed(
-                  context,
-                  NotificationScreen.id,
-                );
-              },
-              child: const Text('View'),
-            ),
-          ],
-        ),
-      );
-    }
-  }
-
   Future<void> initFirestoreListeners() async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String> addedTripIds = prefs.getStringList('addedTripIds') ?? [];
+
     FirebaseFirestore.instance
         .collection('trips')
         .snapshots()
         .listen((snapshot) {
       for (var change in snapshot.docChanges) {
-        if (change.type == DocumentChangeType.added) {
+        if (change.type == DocumentChangeType.added &&
+            !addedTripIds.contains(change.doc.id)) {
+          addedTripIds.add(change.doc.id);
+          prefs.setStringList('addedTripIds', addedTripIds);
           _showLocalNotification(
             change.doc,
-            "Let's Discover New Trip",
-            "Let's Discover New Trip!",
+            'New Trip Added',
+            'A new trip has been added! Check it out.',
           );
-        } else if (change.type == DocumentChangeType.modified) {
+        } else if (change.type == DocumentChangeType.modified &&
+            addedTripIds.contains(change.doc.id)) {
           _showLocalNotification(
             change.doc,
-            'There is an Update',
-            'There is an Update!',
+            'Trip Updated',
+            'An existing trip has been updated. See what\'s new!',
           );
         }
       }
@@ -139,14 +69,14 @@ class FirebaseNotifications {
   void _showLocalNotification(
       DocumentSnapshot doc, String title, String body) async {
     final data = doc.data() as Map<String, dynamic>;
-    final title = data.containsKey('title') ? data['title'] : 'Unknown title';
+    final tripTitle = data['title'] ?? 'Unknown title';
 
-    await _storeNotificationToFirestore(body, ' $title...', doc.id);
+    await _storeNotificationToFirestore(title, body, doc.id);
 
     _localNotifications.show(
       doc.hashCode,
-      body,
-      " Let's see $title Trip.",
+      title,
+      "$body Trip: $tripTitle",
       NotificationDetails(
         android: AndroidNotificationDetails(
           _androidChannel.id,
